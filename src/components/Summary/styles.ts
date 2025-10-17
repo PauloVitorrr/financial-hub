@@ -12,7 +12,7 @@ export const SummaryContainer = styled.section`
 `;
 
 export const SummaryCard = styled.div`
-  background-color: ${(props) => props.theme["gray-400"]};
+  background-color: ${(props) => props.theme["gray-700"]};
   border-radius: 6px;
   padding: 18px;
 

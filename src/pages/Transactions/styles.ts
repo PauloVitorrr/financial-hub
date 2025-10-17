@@ -12,6 +12,24 @@ export const TransactionsContainer = styled.main`
   max-width: 1120px;
   margin: 4rem auto 0;
   padding: 0 1.5rem;
+
+  > button {
+    &:first-of-type {
+      display: block;
+      margin: auto;
+      width: 250xpx;
+      background-color: ${(props) => props.theme["green-500"]};
+      color: ${(props) => props.theme["white"]};
+      padding: 20px;
+      border: none;
+      border-radius: 8px;
+      &:hover {
+        background: ${(props) => props.theme["green-700"]};
+        transition: background-color 0.2s;
+        cursor: pointer;
+      }
+    }
+  }
 `;
 
 export const TransactionsTable = styled.table`

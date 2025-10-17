@@ -5,11 +5,13 @@ import * as S from "./styles";
 import { TransactionsContext } from "../../contexts/TransactionsContext";
 import { dateFormatter, priceFormatter } from "../../utils/formatter";
 import { Trash } from "phosphor-react";
+import { NewTransactionModal } from "../../components/NewTransactionModal";
+import * as Dialog from "@radix-ui/react-dialog";
 
 export default function Transactions() {
   const { transactions, deleteTransactions } = useContext(TransactionsContext);
 
-  console.log(transactions, "transactions page");
+  console.log(transactions);
 
   return (
     <div>
@@ -18,8 +20,13 @@ export default function Transactions() {
         <Summary />
 
         <S.TransactionsContainer>
-          {/* <SearchForm /> */}
-          <button>Olá</button>
+          <Dialog.Root>
+            <Dialog.Trigger asChild>
+              <button>Adicionar nova transação</button>
+            </Dialog.Trigger>
+
+            <NewTransactionModal />
+          </Dialog.Root>
           <S.TransactionsTable>
             <tbody>
               {transactions.map((transaction) => {
