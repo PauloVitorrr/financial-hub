@@ -28,7 +28,7 @@ export default function Transactions() {
                     <td width="50%">{transaction.description}</td>
                     <td>
                       <S.PriceHighLight variant={transaction.type}>
-                        {transaction.type === "Saída" && "- "}
+                        {transaction.type === "saída" && "- "}
                         {priceFormatter.format(transaction.value)}
                       </S.PriceHighLight>
                     </td>

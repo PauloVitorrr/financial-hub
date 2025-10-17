@@ -4,7 +4,7 @@ import { api } from "../services/axios";
 interface Transaction {
   id: number;
   description: string;
-  type: "Entrada" | "Saída";
+  type: "entrada" | "saída";
   value: number;
   category: string;
   date: string;
