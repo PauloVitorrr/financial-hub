@@ -3,9 +3,13 @@ import { Header } from "../../components/Header";
 import Summary from "../../components/Summary";
 import * as S from "./styles";
 import { TransactionsContext } from "../../contexts/TransactionsContext";
+import { dateFormatter, priceFormatter } from "../../utils/formatter";
+import { Trash } from "phosphor-react";
 
 export default function Transactions() {
-  const { transactions } = useContext(TransactionsContext);
+  const { transactions, deleteTransactions } = useContext(TransactionsContext);
+
+  console.log(transactions, "transactions page");
 
   return (
     <div>
@@ -24,20 +28,18 @@ export default function Transactions() {
                     <td width="50%">{transaction.description}</td>
                     <td>
                       <S.PriceHighLight variant={transaction.type}>
-                        {transaction.type === "outcome" && "- "}
-                        {/* {priceFormatter.format(transaction.price)} */}
+                        {transaction.type === "Saída" && "- "}
+                        {priceFormatter.format(transaction.value)}
                       </S.PriceHighLight>
                     </td>
                     <td>{transaction.category}</td>
+                    <td>{dateFormatter.format(new Date(transaction.date))}</td>
                     <td>
-                      {/* {dateFormatter.format(new Date(transaction.createdAt))} */}
-                    </td>
-                    <td>
-                      {/* <ButtonDelete
+                      <S.ButtonDelete
                         onClick={() => deleteTransactions(transaction.id)}
                       >
                         <Trash size={20} />
-                      </ButtonDelete> */}
+                      </S.ButtonDelete>
                     </td>
                   </tr>
                 );

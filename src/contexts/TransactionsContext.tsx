@@ -4,16 +4,16 @@ import { api } from "../services/axios";
 interface Transaction {
   id: number;
   description: string;
-  type: "outcome" | "income";
-  price: number;
+  type: "Entrada" | "Saída";
+  value: number;
   category: string;
-  createdAt: string;
+  date: string;
 }
 
 interface TransactionContextType {
   transactions: Transaction[];
   fetchTransactions: (query?: string) => Promise<void>;
-  //   deleteTransactions: (id: number) => Promise<void>;
+  deleteTransactions: (id: number) => Promise<void>;
 }
 
 interface TransactionsProviderProps {
@@ -37,6 +37,16 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
     setTransactions(response.data);
   }
 
+  async function deleteTransactions(id: number) {
+    await api.delete(`/transactions/${id}`);
+
+    const filterIdTransaction = transactions.filter(
+      (transaction) => transaction.id !== id
+    );
+
+    setTransactions(filterIdTransaction);
+  }
+
   useEffect(() => {
     fetchTransactions();
   }, []);
@@ -46,6 +56,7 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
       value={{
         transactions,
         fetchTransactions,
+        deleteTransactions,
       }}
     >
       {children}

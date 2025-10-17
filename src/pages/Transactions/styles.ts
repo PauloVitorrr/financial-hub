@@ -21,7 +21,7 @@ export const TransactionsTable = styled.table`
   /* margin-top: 1.5rem; */
 
   td {
-    padding: 1.25rem 2rem;
+    padding: 1.25rem 1.9rem;
     background: ${(props) => props.theme["gray-800"]};
 
     &:first-child {
@@ -37,12 +37,23 @@ export const TransactionsTable = styled.table`
 `;
 
 interface PriceHighLightProps {
-  variant: "income" | "outcome";
+  variant: "Entrada" | "Saída";
 }
 
 export const PriceHighLight = styled.span<PriceHighLightProps>`
   color: ${(props) =>
-    props.variant === "income"
+    props.variant === "Entrada"
       ? props.theme["green-300"]
       : props.theme["red-300"]};
+`;
+
+export const ButtonDelete = styled.button`
+  border: none;
+  background-color: transparent;
+  color: ${(props) => props.theme["white"]};
+  cursor: pointer;
+
+  &:hover {
+    color: ${(props) => props.theme["red-300"]};
+  }
 `;
