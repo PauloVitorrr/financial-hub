@@ -14,7 +14,7 @@ Desafio tecnico para a vaga de front-end CORPVS
 </p>
 
 <p align="center">
-     <a href="https://github.com/PauloVitorrr/coffe-delivery">📱 Visit this Project</a>
+     <a href="https://encurtador.com.br/MIhDi">Figma</a>
 </p>
 
 <h2 id="technologies">💻 Technologies</h2>
