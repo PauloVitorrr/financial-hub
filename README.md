@@ -1,8 +1,7 @@
-# financial-hub
+
+<h1 align="center" style="font-weight: bold;"> Financial-hub 💻</h1>
 
 Desafio tecnico para a vaga de front-end CORPVS
-
-<h1 align="center" style="font-weight: bold;"> Coffe Delivery 💻</h1>
 
 <p align="center">
  <a href="#tech">Tecnologias</a> • 
