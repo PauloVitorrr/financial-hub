@@ -36,10 +36,9 @@ export const TransactionsTable = styled.table`
   width: 100%;
   border-collapse: separate;
   border-spacing: 0 0.5rem;
-  /* margin-top: 1.5rem; */
 
   td {
-    padding: 1.25rem 1.9rem;
+    padding: 1.25rem 1.5rem;
     background: ${(props) => props.theme["gray-800"]};
 
     &:first-child {
@@ -65,13 +64,20 @@ export const PriceHighLight = styled.span<PriceHighLightProps>`
       : props.theme["red-300"]};
 `;
 
-export const ButtonDelete = styled.button`
+interface ButtonTableProps {
+  variant?: "delete" | "view" | "edit";
+}
+
+export const ButtonTable = styled.button<ButtonTableProps>`
   border: none;
   background-color: transparent;
   color: ${(props) => props.theme["white"]};
   cursor: pointer;
 
   &:hover {
-    color: ${(props) => props.theme["red-300"]};
+    color: ${(props) =>
+      props.variant === "delete"
+        ? props.theme["red-300"]
+        : props.theme["green-500"]};
   }
 `;

@@ -39,28 +39,6 @@ export const Content = styled(Dialog.Content)`
         color: ${(props) => props.theme["gray-500"]};
       }
     }
-
-    button[type="submit"] {
-      height: 50px;
-      border: 0;
-      background: ${(props) => props.theme["green-500"]};
-      color: ${(props) => props.theme.white};
-      font-weight: bold;
-      padding: 0 1.25rem;
-      border-radius: 6px;
-      margin-top: 1.25rem;
-      cursor: pointer;
-
-      &:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-      }
-
-      &:not(:disabled):hover {
-        background: ${(props) => props.theme["green-700"]};
-        transition: background-color 0.2s;
-      }
-    }
   }
 `;
 
@@ -122,5 +100,28 @@ export const TransactionTypeButton = styled(
     svg {
       color: ${(props) => props.theme.white};
     }
+  }
+`;
+
+export const SubmitButton = styled.button`
+  height: 50px;
+  border: 0;
+  width: 100%;
+  background: ${(props) => props.theme["green-500"]};
+  color: ${(props) => props.theme.white};
+  font-weight: bold;
+  padding: 0 1.25rem;
+  border-radius: 6px;
+  margin-top: 1.25rem;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  &:not(:disabled):hover {
+    background: ${(props) => props.theme["green-700"]};
+    transition: background-color 0.2s;
   }
 `;

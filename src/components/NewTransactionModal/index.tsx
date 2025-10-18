@@ -8,7 +8,7 @@ import * as z from "zod";
 
 import * as S from "./styles";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { TransactionsContext } from "../../contexts/TransactionsContext";
 
 const newTransactionFormSchema = z.object({
@@ -20,14 +20,21 @@ const newTransactionFormSchema = z.object({
 
 type NewTransactionFormInputs = z.infer<typeof newTransactionFormSchema>;
 
-export function NewTransactionModal() {
-  const { createTransaction } = useContext(TransactionsContext);
+interface NewTransactionModalProps {
+  mode?: "view" | "register" | "edit";
+  id?: string;
+}
 
+export function NewTransactionModal({ mode, id }: NewTransactionModalProps) {
+  const { createTransaction, fetchTransactionById, editTransaction } =
+    useContext(TransactionsContext);
+  const [isEditable, setIsEditable] = useState(mode !== "view");
+  const [modeState, setModeState] = useState(mode);
   const {
     control,
     register,
     handleSubmit,
-    formState: { isSubmitting },
+    formState: { isSubmitting, isDirty },
     reset,
   } = useForm<NewTransactionFormInputs>({
     resolver: zodResolver(newTransactionFormSchema),
@@ -36,18 +43,53 @@ export function NewTransactionModal() {
     },
   });
 
-  async function handleCreateNewTransaction(data: NewTransactionFormInputs) {
+  async function handleCreateAndEditTransaction(
+    data: NewTransactionFormInputs
+  ) {
     const { description, value, category, type } = data;
 
-    await createTransaction({
-      description,
-      value,
-      category,
-      type,
-    });
+    if (modeState === "edit" && id) {
+      await editTransaction({
+        id,
+        description,
+        value,
+        category,
+        type,
+        date: new Date(),
+      });
+      return;
+    }
+
+    if (modeState === "register") {
+      await createTransaction({
+        description,
+        value,
+        category,
+        type,
+      });
+    }
 
     reset();
   }
+  useEffect(() => {
+    const loadTransaction = async () => {
+      if (modeState === "view" || (modeState === "edit" && id)) {
+        const transaction = await fetchTransactionById(id as string);
+        if (transaction) {
+          reset({
+            description: transaction.description,
+            value: transaction.value,
+            category: transaction.category,
+            type: transaction.type,
+          });
+        }
+      }
+    };
+
+    loadTransaction();
+  }, [id, mode, fetchTransactionById, reset]);
+
+  const modeVerification = modeState === "view" || modeState === "edit";
 
   return (
     <Dialog.Portal>
@@ -60,11 +102,12 @@ export function NewTransactionModal() {
           <X size={24} />
         </S.CloseButton>
 
-        <form onSubmit={handleSubmit(handleCreateNewTransaction)}>
+        <form onSubmit={handleSubmit(handleCreateAndEditTransaction)}>
           <input
             type="text"
             placeholder="Descrição"
             required
+            disabled={!isEditable}
             {...register("description")}
           />
           <input
@@ -72,12 +115,14 @@ export function NewTransactionModal() {
             placeholder="Preço"
             step="0.01"
             required
+            disabled={!isEditable}
             {...register("value", { valueAsNumber: true })}
           />
           <input
             type="text"
             placeholder="Categoria"
             required
+            disabled={!isEditable}
             {...register("category")}
           />
 
@@ -89,6 +134,7 @@ export function NewTransactionModal() {
                 <S.TransactionType
                   onValueChange={field.onChange}
                   value={field.value}
+                  disabled={!isEditable}
                 >
                   <S.TransactionTypeButton variant="entrada" value="entrada">
                     <ArrowCircleUp size={24} />
@@ -103,11 +149,24 @@ export function NewTransactionModal() {
               );
             }}
           />
-
-          <button type="submit" disabled={isSubmitting}>
-            Cadastrar
-          </button>
+          {isEditable && (
+            <S.SubmitButton
+              type="submit"
+              disabled={isSubmitting || (modeVerification && !isDirty)}
+            >
+              {modeVerification ? "Salvar Alterações" : "Cadastrar"}
+            </S.SubmitButton>
+          )}
         </form>
+
+        {mode === "view" && !isEditable && (
+          <S.SubmitButton
+            type="button"
+            onClick={() => (setIsEditable(true), setModeState("edit"))}
+          >
+            Editar
+          </S.SubmitButton>
+        )}
       </S.Content>
     </Dialog.Portal>
   );

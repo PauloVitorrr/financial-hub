@@ -2,12 +2,12 @@ import { createContext, useEffect, useState, type ReactNode } from "react";
 import { api } from "../services/axios";
 
 interface Transaction {
-  id: number;
+  id: string;
   description: string;
   type: "entrada" | "saída";
   value: number;
   category: string;
-  date: string;
+  date: string | Date;
 }
 
 interface CreateTransactionInput {
@@ -20,8 +20,10 @@ interface CreateTransactionInput {
 interface TransactionContextType {
   transactions: Transaction[];
   fetchTransactions: (query?: string) => Promise<void>;
-  deleteTransactions: (id: number) => Promise<void>;
+  deleteTransactions: (id: string) => Promise<void>;
   createTransaction: (data: CreateTransactionInput) => Promise<void>;
+  fetchTransactionById: (id: string) => Promise<Transaction | null>;
+  editTransaction: (data: Transaction) => Promise<void>;
 }
 
 export const TransactionsContext = createContext({} as TransactionContextType);
@@ -36,7 +38,30 @@ export const TransactionsProvider = ({ children }: { children: ReactNode }) => {
     setTransactions(response.data);
   }
 
-  async function deleteTransactions(id: number) {
+  async function fetchTransactionById(id: string) {
+    try {
+      const response = await api.get(`/transactions?id=${id}`);
+      return response.data[0];
+    } catch (error) {
+      console.error("Erro ao buscar transação:", error);
+      return null;
+    }
+  }
+
+  async function editTransaction(data: Transaction) {
+    const { id, description, value, category, type } = data;
+    await api.put(`/transactions/${id}`, {
+      description,
+      value,
+      category,
+      type,
+      date: new Date(),
+    });
+
+    await fetchTransactions();
+  }
+
+  async function deleteTransactions(id: string) {
     await api.delete(`/transactions/${id}`);
     setTransactions((prev) => prev.filter((t) => t.id !== id));
   }
@@ -64,6 +89,8 @@ export const TransactionsProvider = ({ children }: { children: ReactNode }) => {
         fetchTransactions,
         deleteTransactions,
         createTransaction,
+        fetchTransactionById,
+        editTransaction,
       }}
     >
       {children}
