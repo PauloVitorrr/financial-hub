@@ -15,6 +15,38 @@
       "category": "Casa",
       "type": "saída",
       "date": "2025-10-18T14:57:12.588Z"
+    },
+    {
+      "id": "cef3",
+      "description": "Teste",
+      "value": 2000,
+      "category": "teste",
+      "type": "saída",
+      "date": "2025-10-18T15:41:31.408Z"
+    },
+    {
+      "id": "07b4",
+      "description": "outro teste",
+      "value": 2000,
+      "category": "2222",
+      "type": "entrada",
+      "date": "2025-10-18T15:41:39.730Z"
+    },
+    {
+      "id": "24fc",
+      "description": "teset",
+      "value": 2929,
+      "category": "teste",
+      "type": "entrada",
+      "date": "2025-10-18T15:42:12.564Z"
+    },
+    {
+      "id": "4988",
+      "description": "teste 3",
+      "value": 123,
+      "category": "casa",
+      "type": "entrada",
+      "date": "2025-10-18T15:44:42.693Z"
     }
   ]
 }

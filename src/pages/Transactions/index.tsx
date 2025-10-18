@@ -7,16 +7,21 @@ import { dateFormatter, priceFormatter } from "../../utils/formatter";
 import { NewTransactionModal } from "../../components/NewTransactionModal";
 import * as Dialog from "@radix-ui/react-dialog";
 import { TransactionActionButton } from "../../components/TransactionActionButton";
+import { CaretLeft, CaretRight } from "phosphor-react";
 
 export default function Transactions() {
   const { transactions, deleteTransactions } = useContext(TransactionsContext);
   const [selectedId, setSelectedId] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   const handleOpenModal = (id: string) => {
     setSelectedId(id);
   };
 
-  console.log(transactions, "transactions");
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedTransactions = transactions.slice(startIndex, endIndex);
 
   return (
     <div>
@@ -34,7 +39,7 @@ export default function Transactions() {
           </Dialog.Root>
           <S.TransactionsTable>
             <tbody>
-              {transactions.map((transaction) => {
+              {paginatedTransactions.map((transaction) => {
                 return (
                   <tr key={transaction.id}>
                     <td width="44%">{transaction.description}</td>
@@ -77,6 +82,31 @@ export default function Transactions() {
                 );
               })}
             </tbody>
+            <S.PaginationContainer>
+              <button
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+              >
+                <CaretLeft size={20} />
+              </button>
+
+              <span>{currentPage}</span>
+
+              <button
+                onClick={() =>
+                  setCurrentPage((prev) =>
+                    prev < Math.ceil(transactions.length / itemsPerPage)
+                      ? prev + 1
+                      : prev
+                  )
+                }
+                disabled={
+                  currentPage >= Math.ceil(transactions.length / itemsPerPage)
+                }
+              >
+                <CaretRight size={20} />
+              </button>
+            </S.PaginationContainer>
           </S.TransactionsTable>
         </S.TransactionsContainer>
       </S.Main>

@@ -4,7 +4,7 @@ export const Main = styled.main`
   max-width: 1120px;
   max-width: 1120px;
   margin: 4rem auto 0;
-  padding-top: 60px;
+  padding: 60px 40px;
 `;
 
 export const TransactionsContainer = styled.main`
@@ -38,7 +38,7 @@ export const TransactionsTable = styled.table`
   border-spacing: 0 0.5rem;
 
   td {
-    padding: 1.25rem 1.5rem;
+    padding: 1.1rem 1.2rem;
     background: ${(props) => props.theme["gray-800"]};
 
     &:first-child {
@@ -79,5 +79,27 @@ export const ButtonTable = styled.button<ButtonTableProps>`
       props.variant === "delete"
         ? props.theme["red-300"]
         : props.theme["green-500"]};
+  }
+`;
+export const PaginationContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 1rem;
+  gap: 1rem;
+  button {
+    border: none;
+    background-color: transparent;
+    color: ${(props) => props.theme["white"]};
+    cursor: pointer;
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+  }
+  span {
+    background-color: ${(props) => props.theme["green-500"]};
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
   }
 `;
